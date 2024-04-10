@@ -1,26 +1,28 @@
 #include <stdio.h>
+#define FLAG_LEN 16
 
-void decryptFlag(char *dest) {
-    int i;
-    char encryptedFlag[] = {
-        0x06, 0xc6, 0xe7, 0x97,
-        0x86, 0xf7, 0xd3, 0xb6,
-        0x95, 0x56, 0x46, 0xe7,
-        0xd3, 0x36, 0x86, 0xd0
-    };
+void generate_flag(char *dest) {
+        unsigned int au_flag[] = {      // byte order is automatically reversed
+                0x97e7c606,
+                0xb6d3f786,
+                0xe7465695,
+                0xd08636d3
+        };
+        // cast as unsigned char * for our bitwise operations
+        unsigned char *pc_flag = (unsigned char *)au_flag;
 
-    for (i = 0; i < 16; i++) {
-        dest[i] = ((encryptedFlag[i] & 0xff) >> 4 | (encryptedFlag[i] & 0xff) << 4) ^ 0xd;
-    }
+        for (int i = 0; i < FLAG_LEN; i++) {
+                dest[i] = (pc_flag[i] >> 4 | pc_flag[i] << 4) ^ 0xd;
+        }
 
-    return;
+        return;
 }
 
 int main() {
-    char decryptedFlag[16];
+        char sz_flag[FLAG_LEN] = {0};
 
-    decryptFlag((char *)&decryptedFlag);
-    printf("\ndecrypted flag: %s\n\n", decryptedFlag);
- 
-    return(0);
+        generate_flag((char *)&sz_flag);
+        printf("decrypted flag: %s\n", sz_flag);
+
+        return(0);
 }
