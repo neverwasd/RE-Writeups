@@ -8,9 +8,11 @@ void generate_flag(char *dest) {
                 0xe7465695,
                 0xd08636d3
         };
+        
         // cast as unsigned char * for our bitwise operations
         unsigned char *pc_flag = (unsigned char *)au_flag;
 
+        // decryption routine
         for (int i = 0; i < FLAG_LEN; i++) {
                 dest[i] = (pc_flag[i] >> 4 | pc_flag[i] << 4) ^ 0xd;
         }
